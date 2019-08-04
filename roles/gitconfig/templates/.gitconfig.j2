@@ -1,0 +1,14 @@
+{% if gitconfig_configuration.includeIf is defined %}
+	{% for i in gitconfig_configuration.includeIf %}
+[includeIf "{{i.condition}}"]
+	path = {{i.path}}
+	{% endfor %}
+{% endif %}
+
+
+{% if gitconfig_configuration.user is defined %}
+[user]
+	name = {{gitconfig_configuration.user.name}}
+	email = {{gitconfig_configuration.user.email}}
+
+{% endif %}

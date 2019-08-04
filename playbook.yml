@@ -1,0 +1,24 @@
+- name: "Configure machine with git"
+  hosts: testserver
+  pre_tasks:
+    - debug: msg="Hello World"
+    - include_vars:
+        file: gitconfig.local.yml
+        name: git_local_configuration
+    - include_vars:
+        file: gitconfig.work.yml
+        name: git_work_configuration
+    - include_vars:
+        file: gitconfig.github.yml
+        name: git_github_configuration
+    - debug: msg={{git_local_configuration}}
+  roles:
+    - role: gitconfig
+      gitconfig_destination: ~/.gitconfig.local
+      gitconfig_configuration: "{{git_local_configuration}}"
+    - role: gitconfig
+      gitconfig_destination: ~/.gitconfig.work
+      gitconfig_configuration: "{{git_work_configuration}}"
+    - role: gitconfig
+      gitconfig_destination: ~/.gitconfig.github
+      gitconfig_configuration: "{{git_github_configuration}}"

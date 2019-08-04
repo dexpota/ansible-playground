@@ -1,0 +1,4 @@
+- debug: msg={{gitconfig_configuration}}
+
+- name: "Create .gitconfig file inside home directory."
+  template: src=./templates/.gitconfig.j2 dest={{gitconfig_destination}}
