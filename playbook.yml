@@ -1,6 +1,7 @@
 - name: "Configure machine with git"
-  hosts: testserver
+  hosts: default
   pre_tasks:
+    - apt: name=gpg state=present
     - debug: msg="Hello World"
     - include_vars:
         file: gitconfig.local.yml
