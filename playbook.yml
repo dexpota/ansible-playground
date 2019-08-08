@@ -2,18 +2,9 @@
   hosts: default
   pre_tasks:
     - apt: name=gpg state=present
-    - debug: msg="Hello World"
-    - include_vars:
-        file: gitconfig.local.yml
-        name: git_local_configuration
-    - include_vars:
-        file: gitconfig.work.yml
-        name: git_work_configuration
-    - include_vars:
-        file: gitconfig.github.yml
-        name: git_github_configuration
-    - debug: msg={{git_local_configuration}}
+      become: true
   roles:
+    - role: gitconfig-data
     - role: gitconfig
       gitconfig_destination: ~/.gitconfig.local
       gitconfig_configuration: "{{git_local_configuration}}"

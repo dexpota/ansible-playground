@@ -1,0 +1,10 @@
+- include_vars:
+    file: gitconfig.local.yml
+    name: git_local_configuration
+- include_vars:
+    file: gitconfig.work.yml
+    name: git_work_configuration
+- include_vars:
+    file: gitconfig.github.yml
+    name: git_github_configuration
+- debug: msg={{git_local_configuration}}
