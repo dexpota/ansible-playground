@@ -1,0 +1,24 @@
+- name: Retrieve last information on exercism
+  uri:
+    url: https://api.github.com/repos/exercism/cli/releases/latest
+    method: GET
+    body_format: json
+  register: github_assets
+
+- debug:
+    msg: "a {{github_assets | json_query(query)}} a"
+  vars:
+    query: "(json.assets[?name=='exercism-linux-64bit.tgz'].browser_download_url)[0]"
+
+- get_url:
+    url: "{{tarball_url}}"
+    dest: "{{playbook_dir}}/exercism.tar"
+  become: no
+  vars:
+    tarball_url: "{{github_assets | json_query(query)}}"
+    query: "(json.assets[?name=='exercism-linux-64bit.tgz'].browser_download_url)[0]"
+    name: "{{github_assets | json_query('json.name')}}"
+
+- unarchive:
+    src: "{{playbook_dir}}/exercism.tar"
+    dest: "{{playbook_dir}}"

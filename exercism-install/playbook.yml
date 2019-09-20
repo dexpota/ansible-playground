@@ -1,0 +1,4 @@
+- name: "Install exercism CLI on the machine"
+  hosts: default
+  roles:
+    - role: exercism-install
