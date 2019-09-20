@@ -10,9 +10,18 @@
   vars:
     query: "(json.assets[?name=='exercism-linux-64bit.tgz'].browser_download_url)[0]"
 
+- name: create temporary download directory
+  tempfile:
+    state: directory
+  register: temp_directory
+
+- debug:
+    var: temp_directory.path
+
+
 - get_url:
     url: "{{tarball_url}}"
-    dest: "{{playbook_dir}}/exercism.tar"
+    dest: "{{temp_directory.path}}/exercism.tar"
   become: no
   vars:
     tarball_url: "{{github_assets | json_query(query)}}"
@@ -20,5 +29,7 @@
     name: "{{github_assets | json_query('json.name')}}"
 
 - unarchive:
-    src: "{{playbook_dir}}/exercism.tar"
-    dest: "{{playbook_dir}}"
+    src: "{{temp_directory.path}}/exercism.tar"
+    dest: "/usr/local/bin"
+    remote_src: yes
+  become: yes
